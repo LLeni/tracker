@@ -34,8 +34,10 @@ public class Controller {
     @FXML
     TableColumn<CountPerDate, Integer> columnCount;
 
-    //private final String SQL_STATEMENT_GET_DATA = "SELECT * FROM requests;";
+    // SQL запрос для добавления одного данного в таблицу с заявками
     private final String SQL_STATEMENT_INSERT = "INSERT INTO requests(FIO, address, contacts, executor, condition, description, date) VALUES(?, ?, ?, ?, ?, ?, ?);";
+
+    // SQL запрос для получения всех количеств заявок в определенную дату
     private final String SQL_STATEMENT_COUNT = "SELECT date, Count(*) As count_requests FROM requests GROUP BY date;";
 
     private ObservableList<CountPerDate> data = FXCollections.observableArrayList();
@@ -87,7 +89,7 @@ public class Controller {
             alert.setContentText("Для продолжения нажмите кнопку 'ОК'");
             alert.show();
         } else {
-            clear();
+
             Request request = new Request(fieldFIO.getText(), fieldAddress.getText(), fieldContacts.getText(), fieldExecutor.getText(), fieldCondition.getText(),
                     areaDescription.getText(), getCurrentDate());
             try {
@@ -105,6 +107,9 @@ public class Controller {
                 e.printStackTrace();
             }
 
+
+            // Следующий блок кода добавляет одно данное, если не было найдено данных с текущей датой,
+            // иначе увеличивает количество заявок в существующей дате на один
             boolean isChange = false;
             for (int i = 0; i < data.size(); i++) {
                 if(data.get(i).getDate().equals(request.getDate())){
@@ -116,6 +121,10 @@ public class Controller {
             if(!isChange){
                 data.add(new CountPerDate(request.getDate(), 1));
             }
+
+
+
+            clear();
         }
     }
 
@@ -131,7 +140,6 @@ public class Controller {
 
     private String getCurrentDate(){
         Calendar calendar = new GregorianCalendar();
-        //System.out.println(calendar.getTime().toString());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
         return dateFormatter.format(calendar.getTime());
     }
@@ -153,7 +161,6 @@ public class Controller {
         newWindow.setMinHeight(1200);
         newWindow.setMinHeight(620);
         newWindow.initModality(Modality.WINDOW_MODAL);
-        // Specifies the owner Window (parent) for new window
         newWindow.initOwner(mainStage);
         newWindow.setTitle("Отслеживание заявок - Гистограмма");
         newWindow.setScene(scene);

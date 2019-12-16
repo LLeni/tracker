@@ -1,7 +1,7 @@
 package sample;
 
 public class CountPerDate {
-    //Необходимо для отображения данных в таблице
+    //Необходимо для отображения данных в таблице (которое находится во вкладке 'данные'
     private int count;
     private String date;
 

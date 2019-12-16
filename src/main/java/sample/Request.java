@@ -2,7 +2,10 @@ package sample;
 
 import java.util.GregorianCalendar;
 
+//Класс, объект которого является одной строчкой из таблицы requests в базе данных
+// Это еще так называемый POJO-класс
 public class Request {
+
     private String FIO;
     private String address;
     private String contacts;
